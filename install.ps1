@@ -12,4 +12,6 @@ Copy-Item -Path "$env:USERPROFILE\Downloads\dotfiles-main\dotfiles-main\fonts\mo
 Copy-Item -Path "$env:USERPROFILE\Downloads\dotfiles-main\dotfiles-main\fonts\hack\hack\*" "C:\Windows\Fonts\" -Force -Verbose
 Copy-Item -Path "$env:USERPROFILE\Downloads\dotfiles-main\dotfiles-main\fonts\anonymouspro\anonymouspro\*" "C:\Windows\Fonts\" -Force -Verbose
 #install wallpapers
-Copy-Item -path "$env:USERPROFILE\Downloads\dotfiles-main\dotfiles-main\wallpapers\*" -Destination "$env:USERPROFILE\Pictures\Saved Pictures\" -Force -Verbose
+Copy-Item -path "$env:USERPROFILE\Downloads\dotfiles-main\dotfiles-main\wallpapers\*" -Destination "$env:USERPROFILE\Pictures\Saved Pictures\" -Force -Verbosedocker logs 4dca51915cc0
+
+
