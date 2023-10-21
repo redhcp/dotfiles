@@ -1,0 +1,59 @@
+export DOCKER_TMPDIR="/mnt/storage/docker-tmp"
+export STORAGE="/mnt/externo/storage"
+export MEDIA="/mnt/externo/storage/media"
+
+# git aliases
+alias gs="git status"
+alias gl='git log -3'
+alias gcm='git add -A && git commit -m'
+alias ga='git add --all'
+alias glol="git log --graph --pretty='%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'"
+alias glog="git log --oneline --decorate --graph"
+# directory aliases
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias cd..='cd ..'
+# others aliases
+alias df='df -H'
+alias du='du -ch'
+alias lt='du -sh * | sort -h'
+alias c='clear'
+alias tree='tree --dirsfirst -F'
+alias up2='sudo apt update && sudo apt upgrade && sudo apt autoremove'
+alias memcpu='ps -eo pid,comm,%cpu,%mem --sort=-%mem | head -n 15'
+alias mip="hostname -I"
+alias myip="curl http://ipecho.net/plain; echo"
+alias psport='sudo lsof -i -P | grep LISTEN'
+alias historycount='history | awk '{print $2}' | sort | uniq -c | sort -rn | head -n 20'
+alias ports="lsof -i -n -P"
+# directory ךisting aliases
+alias dir='ls -hFx'
+alias l.='ls -d .* --color=tty' # short listing, only hidden files - .*
+alias l='ls -lathF'             # long, sort by newest to oldest
+alias L='ls -latrhF'            # long, sort by oldest to newest
+alias la='ls -Al'               # show hidden files
+alias lc='ls -lcr'              # sort by change time
+alias lk='ls -lSr'              # sort by size
+alias lh='ls -lSrh'             # sort by size human readable
+alias lm='ls -al | more'        # pipe through 'more'
+alias lo='ls -laSFh'            # sort by size largest to smallest
+alias lr='ls -lR'               # recursive ls
+alias lt='ls -ltr'              # sort by date
+alias lu='ls -lur'              # sort by access time
+alias ll='ls -la'
+# time aliases
+alias timestamp='date "+%Y%m%dT%H%M%S"'
+alias daysleft='echo "There are $(($(date +%j -d"Dec 31, $(date +%Y)")-$(date +%j))) left in year $(date +%Y)."'
+alias editHosts='sudo nano /etc/hosts'
+# docker aliases
+alias dps='docker ps --format "table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Size}}\t{{.Status}}\t{{.CreatedAt}}"'
+alias dim='docker image ls -a'
+alias dst='docker stop'
+alias dvl='docker volume ls -a'
+alias drm='docker rm $(docker stop $(docker ps -aq))'
+alias dud='docker up -D'
+alias dstart='docker start'
+alias dlogs='docker-compose logs --tail=50'
+alias dservice='systemctl list-unit-files | grep docker'
+alias psdoc='ps aux | grep -i docker | grep -v grep'
