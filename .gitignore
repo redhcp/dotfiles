@@ -1,3 +1,7 @@
+.DS_Store
 .vscode
+*~
 install.ps1
+install.bat
 test
+git/config
