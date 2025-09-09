@@ -1,11 +1,6 @@
-export DOCKER_TMPDIR="/mnt/storage/docker-tmp"
-export STORAGE="/mnt/externo/storage"
-export MEDIA="/mnt/externo/storage/media"
-
 # git aliases
-alias gs="git status"
+alias gs="git status -sb"
 alias gl='git log -3'
-alias gcm='git add -A && git commit -m'
 alias ga='git add --all'
 alias glol="git log --graph --pretty='%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'"
 alias glog="git log --oneline --decorate --graph"
@@ -17,7 +12,7 @@ alias cd..='cd ..'
 # others aliases
 alias df='df -H'
 alias du='du -ch'
-alias lt='du -sh * | sort -h'
+alias duh='du -sh * | sort -h'
 alias c='clear'
 alias tree='tree --dirsfirst -F'
 alias up2='sudo apt update && sudo apt upgrade && sudo apt autoremove'
@@ -26,28 +21,38 @@ alias mip="hostname -I"
 alias myip="curl http://ipecho.net/plain; echo"
 alias psport='sudo lsof -i -P | grep LISTEN'
 alias historycount='history | awk '{print $2}' | sort | uniq -c | sort -rn | head -n 20'
+alias historyget= "Get-Content -Path (Get-PSReadLineOption).HistorySavePath"
 alias ports="lsof -i -n -P"
+alias unzipp="ls *.zip | ForEach-Object -Process {Expand-Archive -Path $_.Name -DestinationPath ../ ; Write-Host $_.Name, “ is extracted”;}"
+
 # directory ךisting aliases
 alias dir='ls -hFx'
 alias l.='ls -d .* --color=tty' # short listing, only hidden files - .*
 alias l='ls -lathF'             # long, sort by newest to oldest
 alias L='ls -latrhF'            # long, sort by oldest to newest
-alias la='ls -Al'               # show hidden files
-alias lc='ls -lcr'              # sort by change time
-alias lk='ls -lSr'              # sort by size
-alias lh='ls -lSrh'             # sort by size human readable
-alias lm='ls -al | more'        # pipe through 'more'
-alias lo='ls -laSFh'            # sort by size largest to smallest
-alias lr='ls -lR'               # recursive ls
-alias lt='ls -ltr'              # sort by date
-alias lu='ls -lur'              # sort by access time
 alias ll='ls -la'
+alias cat='bat'
 # time aliases
 alias timestamp='date "+%Y%m%dT%H%M%S"'
 alias daysleft='echo "There are $(($(date +%j -d"Dec 31, $(date +%Y)")-$(date +%j))) left in year $(date +%Y)."'
-alias editHosts='sudo nano /etc/hosts'
+alias edithosts='sudo nano /etc/hosts'
 # docker aliases
-alias dps='docker ps --format "table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Size}}\t{{.Status}}\t{{.CreatedAt}}"'
+alias d='docker $*'
+alias dc='docker-compose $*'
+#alias dps='docker ps --format "table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Size}}\t{{.Status}}\t{{.CreatedAt}}"'
+alias dps='docker ps --format "{{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Ports}}\t{{.Size}}\t{{.CreatedAt}}" | \
+awk -F "\t" '\''BEGIN {OFS="\t"; print "CONTAINER ID","NAMES","STATUS","PORTS","SIZE","CREATED_AT"}
+{
+    gsub(/ \+[0-9]{4} [A-Z]+/, "", $6)
+    cmd="date -d \"" $6 "\" +\"%Y%m%d_%H:%M:%S\""
+    cmd | getline created_fmt
+    close(cmd)
+    $6=created_fmt
+    n=split($4, ports, ", ")
+    for(i=1;i<=n;i++){
+        print $1,$2,$3,ports[i],$5,$6
+    }
+}'\'' | column -t'
 alias dim='docker image ls -a'
 alias dst='docker stop'
 alias dvl='docker volume ls -a'
