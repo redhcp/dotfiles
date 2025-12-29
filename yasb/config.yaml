@@ -1,0 +1,387 @@
+# https://github.com/amnweb/yasb?tab=readme-ov-file#list-of-currently-available-widgets-in-yasb
+watch_stylesheet: true
+watch_config: true
+debug: false
+
+bars:
+  primary-bar:
+    enabled: true
+    screens: ["*"]
+    class_name: "yasb-bar"
+    alignment:
+      position: "top"
+      center: false
+    animation:
+      enabled: true
+      duration: 1000
+    blur_effect:
+      enabled: true
+      acrylic: false
+      dark_mode: true
+      round_corners: false
+      #border_color: None
+    window_flags:
+      auto_hide: false
+      hide_on_fullscreen: true
+      always_on_top: false
+      windows_app_bar: true
+    dimensions:
+      width: "100%"
+      height: 27
+    padding:
+      top: 0
+      left: 0
+      bottom: 0
+      right: 0
+    widgets:
+      left: ["systray", "apps", "wallpaper"]
+      center: ["clock", "weather"]
+      right:
+        [
+          "volume",
+          "media",
+          "bluetooth",
+          "wifi",
+          "language",
+          "memory",
+          "battery",
+        ]
+    layouts:
+      left:
+        alignment: "left"
+        stretch: true
+      center:
+        alignment: "center"
+        stretch: false
+      right:
+        alignment: "right"
+        stretch: true
+widgets:
+  wifi:
+    type: "yasb.wifi.WifiWidget"
+    options:
+      # Only the current network
+      label: "<span>{wifi_icon}</span>"
+      # Changed: Added {public_ip_addr}
+      label_alt: "{wifi_name} - {ip_addr} ({wifi_strength}%)"
+      update_interval: 5000
+      callbacks:
+        on_left: "toggle_label" # No longer opens menu
+        on_middle: "exec cmd.exe /c start ms-settings:network"
+        on_right: "toggle_label"
+      ethernet_label: "<span>{wifi_icon}</span>"
+      # Changed: Added {public_ip_addr}
+      ethernet_label_alt: "<span>{wifi_icon}</span>{ip_addr}"
+      ethernet_icon: "\ueba9"
+      # Icons for signal strength
+      wifi_icons:
+        [
+          "\udb82\udd2e",
+          "\udb82\udd1f",
+          "\udb82\udd22",
+          "\udb82\udd25",
+          "\udb82\udd28",
+        ]
+      label_shadow:
+        enabled: true
+        color: "black"
+        radius: 3
+        offset: [1, 1]
+  systray:
+    type: "yasb.systray.SystrayWidget"
+    options:
+      class_name: "systray"
+      label_collapsed: "\uf137"
+      label_expanded: "\uf138"
+      label_position: "right" # Can be "left" or "right"
+      icon_size: 15 # Can be any integer between 8 and 64
+      pin_click_modifier: "alt" # Can be "ctrl", "alt" or "shift"
+      show_unpinned: false
+      show_unpinned_button: true
+      show_battery: false
+      show_volume: true
+      show_network: false
+      btn_shadow:
+        enabled: true
+        color: "black"
+        radius: 3
+        offset: [1, 1]
+      unpinned_vis_btn_shadow:
+        enabled: true
+        color: "black"
+        radius: 3
+        offset: [1, 1]
+  language:
+    type: "yasb.language.LanguageWidget"
+    options:
+      label: "{lang[country_code]}"
+      update_interval: 1
+      callbacks:
+        on_left: "toggle_menu"
+        on_middle: "do_nothing"
+        on_right: "exec cmd.exe /c start ms-settings:keyboard"
+      language_menu:
+        blur: true
+        round_corners: true
+        round_corners_type: "normal"
+        border_color: "system"
+        alignment: "right"
+        direction: "down"
+        offset_top: 6
+        offset_left: 0
+        show_layout_icon: true
+        layout_icon: "\uf11c"
+      container_padding:
+        top: 0
+        left: 0
+        bottom: 0
+        right: 8
+  memory:
+    type: "yasb.memory.MemoryWidget"
+    options:
+      label: "<span>\uefc5</span> {virtual_mem_percent}%"
+      label_alt: "<span>\uefc5</span> {virtual_mem_used}/{virtual_mem_total}"
+      update_interval: 10000
+      callbacks:
+        on_left: "toggle_label"
+        on_middle: "do_nothing"
+        on_right: "do_nothing"
+      container_padding:
+        top: 0
+        left: 0
+        bottom: 0
+        right: 6
+  media:
+    type: "yasb.media.MediaWidget"
+    options:
+      label: "{title} - {artist}"
+      label_alt: "{title} "
+      max_field_size:
+        label: 16
+        label_alt: 24
+      show_thumbnail: true
+      controls_only: false
+      controls_left: true
+      hide_empty: false
+      thumbnail_alpha: 0
+      thumbnail_padding: 0
+      thumbnail_edge_fade: false
+      icons:
+        prev_track: "\uf048"
+        next_track: "\uf051"
+        play: "\uf04b"
+        pause: "\uf04c"
+      scrolling_label:
+        enabled: true # moving label
+        update_interval_ms: 30
+        style: "left" # can be "left", "right", "bounce", "bounce-ease"
+        separator: " | "
+        label_padding: 1
+        ease_slope: 20
+        ease_pos: 0.8
+        ease_min: 0.5
+      media_menu:
+        blur: true
+        round_corners: true
+        round_corners_type: "normal"
+        border_color: "system"
+        alignment: "right"
+        direction: "down"
+        offset_top: 6
+        offset_left: 80
+        thumbnail_corner_radius: 8
+        thumbnail_size: 120
+        max_title_size: 27
+        max_artist_size: 60
+        show_source: true
+      media_menu_icons:
+        prev_track: "\uf048"
+        next_track: "\uf051"
+        play: "\uf04b"
+        pause: "\uf04c"
+      container_padding:
+        top: 0
+        left: 0
+        bottom: 0
+        right: 0
+      label_shadow:
+        enabled: true
+        color: "black"
+        radius: 3
+        offset: [1, 1]
+      callbacks:
+        on_left: "toggle_play_pause"
+        on_middle: "toggle_label"
+        on_right: "toggle_media_menu"
+  clock:
+    type: "yasb.clock.ClockWidget"
+    options:
+      label: "{%H:%M - %d.%m.%y}"
+      label_alt: "{%H:%M %d.%m.%y}"
+      animation:
+        enabled: false
+      callbacks:
+        on_left: "toggle_calendar"
+      calendar:
+        blur: True
+        round_corners: True
+        round_corners_type: "small"
+        border_color: "None"
+        alignment: "center"
+        direction: "down"
+        distance: 6
+      container_padding:
+        top: 0
+        left: 8
+        bottom: 0
+        right: 8
+  weather:
+    type: "yasb.weather.WeatherWidget"
+    options:
+      label: "<span>{icon}</span> {temp}"
+      label_alt: "{location}: Min {min_temp}, Max {max_temp}, Humidity {humidity}"
+      api_key: "3bf4cf9a7c3f40d6b31174128242807"
+      update_interval: 600
+      hide_decimal: true
+      location: "Israel, Ramat Gan, 5239620 "
+      callbacks:
+        on_left: "toggle_card"
+        on_right: "toggle_label"
+      icons:
+        sunnyDay: "\udb81\udd99"
+        clearNight: "\ue3c2"
+        cloudyDay: "\ue21d"
+        cloudyNight: "\ue226"
+        rainyDay: "\ue371"
+        rainyNight: "\ue371"
+        snowyIcyDay: "\udb81\udf17"
+        snowyIcyNight: "\udb81\udf17"
+        blizzardDay: "\udb81\udd99"
+        default: "\udb81\udd99"
+      container_padding:
+        top: 0
+        left: 8
+        bottom: 0
+        right: 8
+      weather_card:
+        blur: true
+        round_corners: true
+        round_corners_type: "small"
+        border_color: "None"
+        alignment: "right"
+        direction: "down"
+        distance: 6
+        icon_size: 64
+  volume:
+    type: "yasb.volume.VolumeWidget"
+    options:
+      label: "<span>{icon}</span> {level}" #"<span>{icon}</span>"
+      label_alt: "{volume}"
+      tooltip: false
+      animation:
+        enabled: true
+        duration: 200
+        type: "fadeInOut"
+      volume_icons:
+        - "\ueee8"
+        - "\uf026"
+        - "\uf027"
+        - "\uf027"
+        - "\uf028"
+      callbacks:
+        on_left: "toggle_volume_menu"
+        on_middle: "exec cmd.exe /c start ms-settings:apps-volume"
+        on_right: "exec cmd.exe /c start ms-settings:sound"
+      audio_menu:
+        blur: true
+        round_corners: true
+        round_corners_type: "small"
+        border_color: "#7aa2f7"
+        alignment: "center"
+        direction: "down"
+        offset_top: 0
+      callbacks:
+        on_right: "toggle_mute"
+  apps:
+    type: "yasb.applications.ApplicationsWidget"
+    options:
+      container_padding:
+        top: 0
+        left: 8
+        bottom: 0
+        right: 8
+      label: "`{data}"
+      app_list:
+        - {
+            icon: "\uee59",
+            launch: "C:\\Users\\CYL\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Discord Inc\\Discord.lnk",
+          }
+        - {
+            icon: "\uf1b6",
+            launch: "C:\\Users\\CYL\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Steam\\Steam.lnk",
+          }
+        - {
+            icon: "\uf1bc",
+            launch: "C:\\Users\\CYL\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Spotify.lnk",
+          }
+  bluetooth:
+    type: "yasb.bluetooth.BluetoothWidget"
+    options:
+      label: "<span>{icon}</span>"
+      label_alt: "{device_name}"
+      icons:
+        bluetooth_on: "\udb80\udcaf"
+        bluetooth_off: "\udb80\udcb2"
+        bluetooth_connected: "\udb80\udcb1"
+      callbacks:
+        on_right: "exec cmd.exe /c start ms-settings:bluetooth"
+  battery:
+    type: "yasb.battery.BatteryWidget"
+    options:
+      label: "<span>{icon}</span> {percent}%"
+      label_alt: "<span>{icon}</span> {percent}% | time: {time_remaining}"
+      update_interval: 5000
+      time_remaining_natural: False
+      hide_unsupported: True
+      charging_options:
+        icon_format: "{charging_icon}"
+        blink_charging_icon: true
+        blink_interval: 500
+      status_thresholds:
+        critical: 10
+        low: 25
+        medium: 75
+        high: 95
+        full: 100
+      status_icons:
+        icon_charging: "\uf0e7"
+        icon_critical: "\uf244"
+        icon_low: "\uf243"
+        icon_medium: "\uf242"
+        icon_high: "\uf241"
+        icon_full: "\uf240"
+      label_shadow:
+        enabled: true
+        color: "black"
+        radius: 3
+        offset: [1, 1]
+  wallpaper:
+    type: "yasb.wallpapers.WallpapersWidget"
+    options:
+      label: "<span>\uf03e</span>"
+      image_path: "C:\\Users\\CYL\\Pictures\\Saved Pictures"
+      change_automatically: true # Automatically change wallpaper
+      update_interval: 1000
+      gallery:
+        enabled: true
+        blur: true
+        image_width: 250
+        image_per_page: 6
+        show_buttons: true
+        orientation: "portrait"
+        image_spacing: 15
+        lazy_load: true
+        lazy_load_delay: 80
+        lazy_load_fadein: 400
+        image_corner_radius: 8
+        enable_cache: true
