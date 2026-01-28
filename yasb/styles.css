@@ -92,6 +92,7 @@
 }
 .widget .label {
     padding: 0px 2px;
+    font-weight: bold;
 }
 .clock-widget .widget-container,
 .volume-widget .widget-container,
@@ -290,6 +291,7 @@
 .memory-widget .label {
     min-width: 34px;
     max-width: 34px;
+    color: #00ff00;
 }
 .cpu-widget .label {
     min-width: 34px;
@@ -342,46 +344,6 @@
 
 .systray .unpinned-visibility-btn:checked {
 	margin-left: 8px;
-}
-
-/*DISK WIDGET*/
-.disk-widget {
-    padding-right: 0px;
-    padding-left: 12px;
-}
-/*DISK DROPDOWN*/
-.disk-group {
-    background-color: var(--mantle);
-}
-.disk-group-row {
-    min-width: 220px;
-    max-width: 220px;
-    max-height: 40px;
-    margin: 0;
-    padding: 0;
-    border-radius: 6px;
-    border: 1px solid rgba(128, 128, 128, 0);
-}
-.disk-group-row:hover {
-    background-color:rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-.disk-group-label-bar{
-    max-height: 8px;
-    border:0px solid rgba(128, 128, 128, 0);
-    background-color: rgba(148, 226, 213, 0.3);
-    border-radius: 4px;
-}
-.disk-group-label-bar::chunk{
-    background-color: rgba(148, 226, 213, 1);
-    border-radius: 4px;
-}
-.disk-group-label {
-    font-size: 13px;
-}
-.disk-group-label-size {
-    font-size: 12px;
-    color: rgba(205, 214, 244, 0.5);
 }
 
 /* APP Settings */
@@ -449,9 +411,13 @@
 }
 
 /* POWER Settings */
+.widget .icon {
+  font-weight: normal;
+}
 .power-menu-widget .label {
 	background: rgba(0, 0, 0, 0.01);
     font-size: 14px;
+    font-weight: bold;
 }
 .power-menu-popup {
     background-color: transparent;
@@ -592,6 +558,7 @@
 	background: rgba(0, 0, 0, 0.01);
     font-weight: bold;
 	min-width: 30px;
+  margin-right: 6px;
 }
 
 .volume-slider {
@@ -642,7 +609,8 @@
 
 /* LANGUAGE Settings */
 .language-widget {
-    padding-left: 0;
+      margin: 5px;
+      /* margin-right: 6px; */
 }
 .language-widget .widget-container{
     border-bottom-left-radius: 0;
@@ -665,7 +633,7 @@
     min-width: 300px;
 }
 .language-menu .header {
-    font-size: 14px;
+    font-size: 18px;
     font-weight: bold;
     margin-bottom: 2px;
     padding: 12px;
@@ -809,37 +777,6 @@
     border-bottom-right-radius: 0;
     border-top-right-radius: 0;
 }
-
-/* HOME Settings */
-.home-widget {
-    padding: 2px 4px 2px 0px;
-}
-.home-widget .widget-container {
-    background-color: var(--widget-background);
-    border-radius: 8px;
-}
-.home-widget .icon:hover {
-    color: var(--main);
-}
-.home-menu {
-    background-color: var(--crust);
-}
-.home-menu .menu-item {
-    padding: 8px 48px 9px 16px;
-    font-size: 12px;
-    font-family: 'JetBrainsMono NFP';
-    color: var(--main);
-    font-weight: 600;
-}
-.home-menu .menu-item:hover {
-    background-color: rgba(157, 180, 141, 0.116);
-    color: #fff;
-}
-.home-menu .separator {
-    max-height: 1px;
-    background-color: rgba(157, 180, 141, 0.116);
-}
-
 /* MEDIA Settings */
 .media-widget {
 	padding: 0;
@@ -967,21 +904,10 @@
     height: 4px;
 }
 
-
-/* NOTIFICATION Settings */
-.notification-widget .icon {
-    color: var(--main);
-}
-.notification-widget .icon.new-notification {
-    color: var(--main);
-}
-.notification-widget .label.new-notification {
-    color: var(--main);
-}
-
 /* bluetooth Settings */
 .bluetooth-widget .icon {
-	background: rgba(0, 0, 0, 0.01);
+    margin: 5px;
+    margin-right: 8px;
 }
 .bluetooth-widget {}
 .bluetooth-widget .widget-container {}
@@ -990,4 +916,19 @@
 }
 .bluetooth-widget .label.alt {
 	background: rgba(0, 0, 0, 0.01);
+}
+.wallpapers-gallery-buttons {
+  background-color: var(--base);
+  color: var(--text);
+  border: none;
+  font-size: 16px;
+  padding: 8px 0px;
+  border-radius: 8px;
+  margin: 8px 8px 8px 8px;
+  width: 600px;
+  font-family: "SF Pro Rounded";
+}
+
+.wallpapers-widget {
+  padding: 0 6px 0 6px;
 }
