@@ -15,9 +15,21 @@
 - desktop wallpapers
 - fonts
 
-
 #### Run to install
+
 ```powershell
 
 .\install.bat
 ```
+
+#### Locations
+
+**Terminal Config:** %LOCALAPPDATA%\Packages\Microsoft.WindowsTerminal\_\*\LocalState\settings.json
+
+**Powershell Profiles:** %USERPROFILE%\Documents\PowerShell\Microsoft.PowerShell\*profile.ps1
+
+**Assets:** %USERPROFILE%\AppData\Local\PowerShellTerminalAssets
+
+**Oh-My-Posh Theme:** %LOCALAPPDATA%\Programs\oh-my-posh\themes\wylde.omp.json
+
+**Windows Fonts:** C:\Windows\Fonts

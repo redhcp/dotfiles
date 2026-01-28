@@ -1,35 +1,81 @@
-#Import-Module oh-my-posh
+# PowerShell Profile
+# =============================================================================
+
+# --- 1. Modules Imports ---
 Import-Module -Name Terminal-Icons
 Import-Module -Name PoshGram
-oh-my-posh init pwsh --config "$env:USERPROFILE\Documents\WindowsPowerShell\lightgreen.omp.json" | Invoke-Expression
+Import-Module -Name PSReadLine
 
-#history
+# --- 2. Prompt Configuration (Oh-My-Posh) ---
+$ThemePath = "$HOME\Documents\WindowsPowerShell\lightgreen.omp.json"
+if (Test-Path $ThemePath) {
+    oh-my-posh init pwsh --config $ThemePath | Invoke-Expression
+}
+# --- 3. PSReadLine & History Configuration ---
 Set-PSReadLineOption -MaximumHistoryCount 20000
-$env:PSReadlineHistorySavePath = "$env:USERPROFILE\Documents\WindowsPowerShell\history.txt"
-Set-PSReadlineOption -HistorySaveStyle SaveIncrementally
+Set-PSReadLineOption -HistorySaveStyle SaveIncrementally
+$env:PSReadlineHistorySavePath = "$HOME\Documents\WindowsPowerShell\history.txt"
+# Map Up/Down arrows to filter history based on current input
+try {
+    Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
+    Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
+} catch {
+    Write-Warning "PSReadLine not loaded, keybindings skipped."
+}
 
-#terminal
-Import-Module PSReadLine
+
 Set-PSReadLineOption -PredictionSource History
 Set-PSReadLineOption -PredictionViewStyle ListView
 Set-PSReadLineOption -EditMode Windows
 
-Set-alias susp "$env:USERPROFILE\Documents\WindowsPowerShell\suspend.bat"
-Set-alias c clear
-Set-Alias grep findstr
-set-Alias ytmusic "$env:USERPROFILE\Documents\WindowsPowerShell\ytmusic.ps1"
-set-Alias ytmusicplist "$env:USERPROFILE\Documents\WindowsPowerShell\ytmusicplist.ps1"
-set-Alias ytvideo "$env:USERPROFILE\Documents\WindowsPowerShell\ytvideo.ps1"
-set-Alias ytvideoplist "$env:USERPROFILE\Documents\WindowsPowerShell\ytvideoplist.ps1"
-set-alias grep="grep --color=auto"
-set-alias dcb="docker-compose build"
-set-alias dcd="docker-compose down"
-set-alias dcps="docker-compose ps"
-set-alias dcu="docker-compose up"
-set-alias dcupd="docker-compose up -d"
-set-alias dps="docker ps"
+# --- 4. Custom Functions ---
+function ll { Get-ChildItem -Verbose }
+function gpath { pwd | Set-Clipboard }
+function mkcd { param($dir) mkdir $dir -Force | Out-Null; cd $dir }
+function shutdowns { shutdown -s -t 0 }
+function restart { shutdown -r -t 0 }
+function ll { Get-ChildItem -Verbose }
+function ls { Get-ChildItem -Color }
+# --- Git Shortcodes ---
+Set-Alias -Name g -Value git
+function gs { git status -sb }
+function ga { git add . }
+function gc { param($m) git commit -m $m }
+# 'mip': Get Local IP Address (IPv4)
+function mip {
+    Get-NetIPAddress -AddressFamily IPv4 |
+        Where-Object { $_.InterfaceAlias -notlike "*Loopback*" } |
+        Select-Object -ExpandProperty IPAddress
+}
+# 'myip': Get Public IP Address
+function myip {
+    (Invoke-WebRequest -Uri "http://ipecho.net/plain" -UseBasicParsing).Content.Trim()
+}
+# 'ports': List listening ports and owning processes
+function ports {
+    Get-NetTCPConnection -State Listen |
+        Select-Object LocalAddress, LocalPort, OwningProcess, @{Name="Process"; Expression={(Get-Process -Id $_.OwningProcess).ProcessName}} |
+        Format-Table -AutoSize
+}
+# --- 5. Aliases ---
+Set-Alias -Name c -Value Clear-Host
+Set-Alias -Name grep -Value findstr
+$ScriptDir = "$HOME\Documents\WindowsPowerShell"
+Set-Alias -Name susp -Value "$ScriptDir\suspend.bat"
+Set-Alias -Name hibe -Value "$ScriptDir\hibernate.bat"
 
+Set-Alias -Name .. -Value "cd .."
+Set-Alias -Name ... -Value "cd ..\.."
 
+Set-Alias -Name ytmusic -Value "$ScriptDir\ytmusic.ps1"
+Set-Alias -Name ytmusicplist -Value "$ScriptDir\ytmusicplist.ps1"
+Set-Alias -Name ytvideo -Value "$ScriptDir\ytvideo.ps1"
+Set-Alias -Name ytvideoplist -Value "$ScriptDir\ytvideoplist.ps1"
+Set-Alias -Name ytvideoH -Value "$ScriptDir\ytvideoH.ps1"
+Set-Alias -Name ytvideoplistH -Value "$ScriptDir\ytvideoplistH.ps1"
+
+# --- 6. Argument Completers ---
+# AWS Completer
 Register-ArgumentCompleter -Native -CommandName aws -ScriptBlock {
     param($commandName, $wordToComplete, $cursorPosition)
     $env:COMP_LINE = $wordToComplete
@@ -43,7 +89,7 @@ Register-ArgumentCompleter -Native -CommandName aws -ScriptBlock {
     Remove-Item Env:\COMP_LINE
     Remove-Item Env:\COMP_POINT
 }
-#chocolatey profile
+# Chocolatey Profile
 $ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
 if (Test-Path($ChocolateyProfile)) {
   Import-Module "$ChocolateyProfile"
